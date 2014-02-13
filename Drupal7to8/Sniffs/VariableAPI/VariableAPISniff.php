@@ -61,7 +61,11 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
 
           // Find any default values if available
           $default_value = $this->getArgument($phpcsFile, $stackPtr, 1);
-          if (!empty($default_value)) {
+          if ($default_value !== FALSE) {
+            // Since all of these values will come back as strings, but may
+            // actually be booleans, nulls, numbers, etc. we run the variable
+            // through eval() so it comes back as the proper type.
+            $default_value = eval("return $default_value;");
             $this->addDefaultValue($phpcsFile, $config_object_name, $updated_varname, $default_value);
           }
 
@@ -136,10 +140,7 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
       array_shift($var_parts);
     }
     $updated_varname = implode('_', $var_parts);
-    if (strlen($cleaned_varname) !== strlen($varname)) {
-      // If the original name was a string literal, then return the same.
-      $updated_varname = "'" . $updated_varname . "'";
-    }
+
     return array($module_name . '.settings', $updated_varname);
   }
 
@@ -219,23 +220,29 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
     $module_properties = Drupal7to8_Utility_ModuleProperties::getModuleNameAndPath($phpcsFile);
     $settings_file = $module_properties['module_path'] . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $config_object_name . '.yml';
 
-    // Parse the YAML to see if the variable already exists
     $config = array();
     if (file_exists($settings_file)) {
+      // Parse the YAML from the existing file, or...
       $yaml = file_get_contents($settings_file);
       $config = Yaml::parse($yaml);
     }
     else {
+      // Create the config directory so we can create the file for the first
+      // time later.
       mkdir($module_properties['module_path'] . DIRECTORY_SEPARATOR . 'config');
     }
 
     // If the variable exists with a different value - provide some notification???
-    if (isset($config[$config_object_name]) && $config[$config_object_name] != $default_value) {
+    if (isset($config[$variable_name]) && $config[$variable_name] != $default_value) {
       // @todo: No idea how to inject stdout stuff during fixing.
+    }
+    elseif (isset($config[$variable_name])) {
+      // Already added this one. Bail out.
+      return;
     }
 
     // Add the default value to the file.
-    $config[$config_object_name][$variable_name] = $default_value;
+    $config[$variable_name] = $default_value;
 
     // Write out YAML File.
     Drupal7to8_Utility_CreateFile::writeYaml($settings_file, $config);
