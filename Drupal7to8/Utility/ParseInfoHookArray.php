@@ -12,7 +12,7 @@
 class Drupal7to8_Utility_ParseInfoHookArray {
 
   /**
-   * Determine the module name based on the file being examined.
+   * Determines the module name based on the file being examined.
    *
    * @param PHP_CodeSniffer_File $phpcsFile
    *   The code sniffer file.
@@ -30,6 +30,19 @@ class Drupal7to8_Utility_ParseInfoHookArray {
     return FALSE;
   }
 
+  /**
+   * Evaluates tokens for the info hook and returns a PHP array.
+   *
+   * @param string $static_drupal_code
+   *   A string of Drupal code to append at the beginning of the eval()
+   *   statement. You can use this to provide constants, function definitions,
+   *   etc. to the info hook.
+   * @param Drupal7to8UtilityTokenSubset $token_range
+   *   The token range object for the info hook.
+   *
+   * @return array
+   *   The return value of the info hook.
+   */
   static public function getArray($static_drupal_code, Drupal7to8_Utility_TokenSubset $token_range) {
     return eval($static_drupal_code . $token_range->getContent());
   }
