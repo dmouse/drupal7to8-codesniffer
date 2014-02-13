@@ -188,7 +188,7 @@ class Drupal7to8_Base_FunctionReplacementSniff extends Generic_Sniffs_PHP_Forbid
       $comma = $arg_start;
 
       for ($arg = 1; $arg <= $n; $arg++) {
-        $comma = $phpcsFile->findNext(T_COMMA, $comma + 1, $closeParenthesis);
+        $comma = $this->findFunctionArgumentComma($phpcsFile, $comma + 1, $closeParenthesis);
         if ($comma === FALSE) {
           return FALSE;
         }
@@ -203,12 +203,48 @@ class Drupal7to8_Base_FunctionReplacementSniff extends Generic_Sniffs_PHP_Forbid
 
     // If there still is a next comma, and hence a next argument, then we should
     // stop before that comma instead of before the closing parenthesis.
-    $nextComma = $phpcsFile->findNext(T_COMMA, ($arg_start + 1), $closeParenthesis);
+    $nextComma = $this->findFunctionArgumentComma($phpcsFile, $arg_start, $closeParenthesis);
     if ($nextComma !== FALSE) {
       $arg_end = $remove_end = $nextComma - 1;
     }
 
     return array($arg_start, $arg_end, $remove_start, $remove_end);
+  }
+
+  /**
+   * Find a function argument comma in the given search range.
+   *
+   * One of the parameters may be an array, which can also contain commas, but
+   * they aren't commas separating function arguments, so we ignore them.
+   *
+   * @param PHP_CodeSniffer_File $phpcsFile
+   * @param int $search_start
+   *   A position to start searching within the parentheses of a function call;
+   *   either the first token after the opening parenthesis or any location
+   * @param int $closeParenthesis
+   *   The position of the closing parenthesis of the function call.
+   *
+   * @return int
+   *   The position of the comma, if any
+   */
+  protected function findFunctionArgumentComma(PHP_CodeSniffer_File $phpcsFile, $search_start, $closeParenthesis) {
+    $tokens = $phpcsFile->getTokens();
+    $is_top_level_comma = TRUE;
+    do {
+      $comma = $phpcsFile->findNext(T_COMMA, $search_start, $closeParenthesis);
+      // We're only interested in the next comma, but since an argument may
+      // be an array, which may contain a comma, we must ensure that the
+      // comma we found is not part of an array.
+      $array_start = $phpcsFile->findNext(T_ARRAY, $search_start, $comma);
+      if ($comma !== FALSE && $array_start !== FALSE) {
+        $array_end = $tokens[$array_start]['parenthesis_closer'];
+        if ($array_end > $comma) {
+          $comma = $phpcsFile->findNext(T_COMMA, $array_end + 1, $closeParenthesis);
+        }
+      }
+    } while (!$is_top_level_comma);
+
+    return $comma;
   }
 
 }
