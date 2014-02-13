@@ -63,6 +63,8 @@ class Drupal7to8_Base_FunctionReplacementSniff extends Generic_Sniffs_PHP_Forbid
           $result = $this->findNthArgument($phpcsFile, $stackPtr, $argument);
           // Return early if there is no nth argument.
           if ($result === FALSE) {
+            // But still replace the placeholder!
+            $replacement = strtr($replacement, array('$' . $argument => ''));
             continue;
           }
           list($arg_start, $arg_end, $remove_start, $remove_end) = $result;
