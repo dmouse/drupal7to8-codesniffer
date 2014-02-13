@@ -220,31 +220,10 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
     $module_properties = Drupal7to8_Utility_ModuleProperties::getModuleNameAndPath($phpcsFile);
     $settings_file = $module_properties['module_path'] . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $config_object_name . '.yml';
 
-    $config = array();
-    if (file_exists($settings_file)) {
-      // Parse the YAML from the existing file, or...
-      $yaml = file_get_contents($settings_file);
-      $config = Yaml::parse($yaml);
-    }
-    else {
-      // Create the config directory so we can create the file for the first
-      // time later.
-      mkdir($module_properties['module_path'] . DIRECTORY_SEPARATOR . 'config');
-    }
-
-    // If the variable exists with a different value - provide some notification???
-    if (isset($config[$variable_name]) && $config[$variable_name] != $default_value) {
-      // @todo: No idea how to inject stdout stuff during fixing.
-    }
-    elseif (isset($config[$variable_name])) {
-      // Already added this one. Bail out.
-      return;
-    }
-
     // Add the default value to the file.
     $config[$variable_name] = $default_value;
 
     // Write out YAML File.
-    Drupal7to8_Utility_CreateFile::writeYaml($settings_file, $config);
+    Drupal7to8_Utility_CreateFile::readAndWriteYaml($settings_file, $config);
   }
 }

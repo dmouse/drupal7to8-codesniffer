@@ -112,10 +112,17 @@ class Drupal7to8_Utility_CreateFile {
    *   Whether the file was written successfully.
    */
   public static function readAndWriteYaml($filename, array $data) {
-    $original_yaml = Yaml::parse($filename);
-    $merged_data = array_merge_recursive($original_yaml, $data);
-    $yaml = Yaml::dump($data);
-    self::writeYaml($filename, $yaml);
+    $original_yaml = array();
+    if (file_exists($filename)) {
+      $contents = file_get_contents($filename);
+      $original_yaml = Yaml::parse($contents);
+    }
+    // @todo we need something that will work for both deepply nested arrays
+    // but also not double-nest un-nested arrays. :P
+    // In other words, this works fine for config, but will fail on menu arrays.
+    $merged_data = array_merge($original_yaml, $data);
+
+    self::writeYaml($filename, $merged_data);
   }
 
 }
