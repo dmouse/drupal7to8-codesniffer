@@ -24,7 +24,7 @@ class Drupal7to8_Utility_ModuleProperties {
    *   The module name if it can be determined, NULL if it cannot.
    */
   static public function getModuleName(PHP_CodeSniffer_File $phpcsFile) {
-    $module_properties = self::getModuleNameAndPath($phpcsFile);
+    $module_properties = static::getModuleNameAndPath($phpcsFile);
     return $module_properties['module_name'];
   }
 
@@ -38,7 +38,7 @@ class Drupal7to8_Utility_ModuleProperties {
    *   The absolute path to the module if it can be determined, or NULL.
    */
   static public function getModulePath(PHP_CodeSniffer_File $phpcsFile) {
-    $module_properties = self::getModuleNameAndPath($phpcsFile);
+    $module_properties = static::getModuleNameAndPath($phpcsFile);
     return $module_properties['module_path'];
   }
 
@@ -79,6 +79,37 @@ class Drupal7to8_Utility_ModuleProperties {
     }
 
     return $return;
+  }
+
+  /**
+   * Returns the absolute PSR-0 or PSR-4 path for the module and namespace.
+   *
+   * @param PHP_CodeSniffer_File $phpcsFile
+   *   The code sniffer file.
+   * @param string $namespace
+   *   (optional) The sub-namespace for the class relative to the root
+   *   namespace for the module. For example, for the namespace
+   *   \Drupal\node\Form, pass 'Form'. Pass nothing to use the module's root
+   *   namespace.
+   * @param bool $psr4
+   *    (optional) Whether to return a PSR-4 path instead of PSR-0. Defaults to
+   *    FALSE (so that a PSR-0 path is returned).
+   *
+   * @return string|null
+   *   The absolute path to the PSR-0 or PSR-4 directory, or NULL.
+   */
+  public static function getPsrPath(PHP_CodeSniffer_File $phpcsFile, $namespace = '', $psr4 = FALSE) {
+    $path_parts = array();
+    $path_parts[] = static::getModulePath($phpcsFile);
+    $path_parts[] = 'lib';
+    if (!$psr4) {
+      $path_parts[] = 'Drupal';
+      $path_parts[] = static::getModuleName($phpcsFile);
+    }
+    if (!empty($namespace)) {
+      $path_parts[] = str_replace('\\', DIRECTORY_SEPARATOR, $namespace);
+    }
+    return implode(DIRECTORY_SEPARATOR, $path_parts);
   }
 
 }
