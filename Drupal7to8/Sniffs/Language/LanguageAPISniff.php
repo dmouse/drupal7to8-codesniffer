@@ -77,7 +77,7 @@ class Drupal7to8_Sniffs_Language_LanguageAPISniff extends Drupal7to8_Base_Functi
             $customMessage = 'The argument for the replacement of language_list(), languageManager()->getLanguages() does not take field names anymore. It takes language state. Review Language::STATE_* constants.';
             $fix = $phpcsFile->addFixableError($customMessage, $stackPtr, $this->code);
             if ($fix === TRUE && $phpcsFile->fixer->enabled === TRUE) {
-                $this->insertFixMeComment($phpcsFile, $stackPtr, $customMessage, $this->forbiddenFunctions[$function]);
+                Drupal7to8_Utility_InsertContent::insertFixMeComment($phpcsFile, $stackPtr, $customMessage, $this->forbiddenFunctions[$function]);
             }
         }
     }
