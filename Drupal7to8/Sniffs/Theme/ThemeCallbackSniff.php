@@ -44,7 +44,9 @@ class Drupal7to8_Sniffs_Theme_ThemeCallbackSniff implements PHP_CodeSniffer_Snif
             $message = 'Theme functions should be converted to Twig templates: https://drupal.org/node/1831138';
             $fix = $phpcsFile->addFixableError($message, $stackPtr, 'ThemeCallback');
             if ($fix === true && $phpcsFile->fixer->enabled === true) {
-                //Drupal7to8_Utility_InsertContent::insertFixMeComment($phpcsFile, $stackPtr, $message);
+                // Add fixme comment on 2 tokens from here (whitespace and function
+                // name after the function keyword).
+                Drupal7to8_Utility_InsertContent::insertFixMeComment($phpcsFile, $stackPtr + 2, $message);
             }
         }
     }
