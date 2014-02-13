@@ -13,6 +13,8 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Dumper;
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 /**
  * Handles variable_get(), variable_set() and variable_del().
  *
