@@ -146,8 +146,18 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
       return FALSE;
     }
 
-    // Convert to the new config object name and updated variable name.
     $cleaned_varname = str_replace("'", "", $varname);
+
+    // Handle variables that we know exist elsewhere.
+    $well_known_vaiable_names = array(
+      'site_name' => array('system.site', 'name'),
+      // @todo expand
+    );
+    if (isset($well_known_vaiable_names[$cleaned_varname])) {
+      return $well_known_vaiable_names[$cleaned_varname];
+    }
+
+    // Convert to the new config object name and updated variable name.
     $module_name = Drupal7to8_Utility_ModuleProperties::getModuleName($phpcsFile);
     $var_parts = explode('_', $cleaned_varname);
     if ($var_parts[0] == $module_name) {
