@@ -84,7 +84,7 @@ class Drupal7to8_Sniffs_InfoFiles_InfoToYamlSniff implements PHP_CodeSniffer_Sni
 
     // Now we have an array of info. Check for required/extraneous properties.
 
-    // type: module
+    // New "type: module" key required.
     if (!array_key_exists('type', $info)) {
       $fix = $phpcsFile->addFixableError('Missing required "type" property: https://drupal.org/node/1935708', $stackPtr, 'YamlVerify');
       if ($fix === true && $phpcsFile->fixer->enabled === true) {
@@ -94,7 +94,7 @@ class Drupal7to8_Sniffs_InfoFiles_InfoToYamlSniff implements PHP_CodeSniffer_Sni
       }
     }
 
-    // core: 8.x
+    // Change core to 8.x.
     if ($info['core'] == '7.x') {
       $fix = $phpcsFile->addFixableError('The "core" property must change to "8.x": https://drupal.org/node/1935708', $stackPtr, 'YamlVerify');
       if ($fix === true && $phpcsFile->fixer->enabled === true) {
@@ -103,19 +103,41 @@ class Drupal7to8_Sniffs_InfoFiles_InfoToYamlSniff implements PHP_CodeSniffer_Sni
       }
     }
 
-    // files array
+    // Files array is no more.
     if (array_key_exists('files', $info)) {
-      // We can't really fix this, so leave the warning here.
-      $phpcsFile->addError('Drupal 8 now uses PSR class loading; remove "files" entries from .info.yml file.: https://drupal.org/node/1320394', $stackPtr, 'YamlVerify');
+      $phpcsFile->addFixableError('Drupal 8 now uses PSR class loading; remove "files" entries from .info.yml file.: https://drupal.org/node/1320394', $stackPtr, 'YamlVerify');
+      if ($fix === true && $phpcsFile->fixer->enabled === true) {
+        // Ditch it.
+        unset($info['files']);
+      }
     }
 
-    // styles and scripts array
+    // Styles and scripts arrays are no longer allowed.
     if (array_key_exists('stylesheets', $info) || array_key_exists('scripts', $info)) {
       // Don't think we can fix this one.
       $phpcsFile->addError('Modules can no longer add stylesheets/scripts via their .info.yml file: https://drupal.org/node/1876152', $stackPtr, 'YamlVerify');
     }
 
-    // @todo: Dependencies that are no longer needed in 8.x.
+    // Remove dependencies that are no longer needed in 8.x.
+    if (array_key_exists('dependencies', $info)) {
+      $phpcsFile->addFixableError('Lots of modules moved into core, so you no longer need to declare them as dependencies!: https://drupal.org/node/1320394', $stackPtr, 'YamlVerify');
+      if ($fix === true && $phpcsFile->fixer->enabled === true) {
+        // Ditch 'em.
+        foreach ($info['dependencies'] as $key => $module) {
+          switch ($module) {
+            // Modules that were (largely) moved into core.
+            case 'ctools':
+
+            // Modules that were absorbed into other core modules.
+            case 'list':
+              unset($info['dependencies'][$key]);
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }
 
     // All done with our checks; write the YAML out again.
     if ($phpcsFile->fixer->enabled === true) {
