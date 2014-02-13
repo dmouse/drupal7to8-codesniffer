@@ -55,6 +55,11 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
           }
           list($config_object_name, $updated_varname) = $result;
 
+          // Find any default values if available
+          if ($default_value = $this->getArgument($phpcsFile, $stackPtr, 1)) {
+            $this->addDefaultValue($config_object_name, $updated_varname, eval($default_value));
+          }
+
           // Update to the new statement.
           $replacement = "\Drupal::config('$config_object_name')->get($updated_varname)";
 
@@ -71,13 +76,9 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
           list($config_object_name, $updated_varname) = $result;
 
           // Find the updated value
-          $result = $this->findNthArgument($phpcsFile, $stackPtr, 1);
-          // Return early if there is no value to set.
-          if ($result === FALSE) {
-            return;
+          if (!$new_value = $this->getArgument($phpcsFile, $stackPtr, 1)) {
+            return FALSE;
           }
-          list($arg_start, $arg_end, $remove_start, $remove_end) = $result;
-          $new_value = Drupal7to8_Utility_TokenRange::getContent($tokens, $arg_start, $arg_end);
 
           // Update to the new statement.
           $replacement = "\Drupal::config('$config_object_name')->set($updated_varname, $new_value)->save()";
@@ -118,14 +119,9 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
    *   An array of parsed tokens within the file.
    */
   function getUpdatedVariableName(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens) {
-    $result = $this->findNthArgument($phpcsFile, $stackPtr, 0);
-    // Return early if there is no variable to get.
-    if ($result === FALSE) {
+    if (!$varname = $this->getArgument($phpcsFile, $stackPtr, 0)) {
       return FALSE;
     }
-    // Find the variable name to get
-    list($arg_start, $arg_end, $remove_start, $remove_end) = $result;
-    $varname = Drupal7to8_Utility_TokenRange::getContent($tokens, $arg_start, $arg_end);
 
     // Convert to the new config object name and updated variable name.
     $cleaned_varname = str_replace("'", "", $varname);
@@ -139,7 +135,30 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
       // If the original name was a string literal, then return the same.
       $updated_varname = "'" . $updated_varname . "'";
     }
-    return array($module_name . '.setting', $updated_varname);
+    return array($module_name . '.settings', $updated_varname);
+  }
+
+  /**
+   * Return a specific argument from a function call.
+   * @param PHP_CodeSniffer_File $phpcsFile
+   *   The file to search.
+   * @param $stackPtr
+   *   The index of the function string in the tokens
+   * @param $n
+   *   The index of the argument to retrieve
+   * @return bool|string
+   *   The value of the argument or false if no argument is found.
+   */
+  function getArgument(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $n) {
+    $result = $this->findNthArgument($phpcsFile, $stackPtr, 0);
+    // Return early if there is no variable to get.
+    if ($result === FALSE) {
+      return FALSE;
+    }
+    // Find the variable name to get
+    list($arg_start, $arg_end, $remove_start, $remove_end) = $result;
+    $value = Drupal7to8_Utility_TokenRange::getContent($tokens, $arg_start, $arg_end);
+    return $value;
   }
 
   /**
@@ -161,5 +180,38 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
     $closeParenthesis = $tokens[$openParenthesis]['parenthesis_closer'];
     Drupal7to8_Utility_TokenRange::remove($phpcsFile->fixer, $openParenthesis, $closeParenthesis);
     $phpcsFile->fixer->replaceToken($stackPtr, $replacement);
+  }
+
+  /**
+   * Adds a default value to the settings configuration file.
+   *
+   * @param PHP_CodeSniffer_File $phpcsFile
+   *   The file that is currently being traversed.
+   * @param string $config_object_name
+   *   The configuration object name (i.e., modulename.setting)
+   * @param string $variable_name
+   *   The name of the variable within the configuration object.
+   * @param $default_value
+   *   The default value to store
+   *
+   * @todo Is there some way to save this up until the end rather than
+   * reading/writing the file so much????
+   * Maybe the file writing utility class is the place for this logic as it will
+   * need to keep a reference to the variables to write for all files to write
+   * at the end of the process.
+   */
+  function addDefaultValue(PHP_CodeSniffer_File $phpcsFile, $config_object_name, $variable_name, $default_value) {
+    // Determine the settings file.
+    $module_properties = Drupal7to8_Utility_ModuleProperties::getModuleNameAndPath($phpcsFile);
+    $settings_file = $module_properties['module_path'] . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $config_object_name . '.yml';
+
+    // Parse the YAML to see if the variable already exists
+    if (file_exists($settings_file)) {
+      $yaml = file_get_contents($settings_file);
+       
+    }
+    // If the variable exists with a different value - provide some notification???
+    // Add to file if it doesn't already exist
+    // Write out YAML File
   }
 }
