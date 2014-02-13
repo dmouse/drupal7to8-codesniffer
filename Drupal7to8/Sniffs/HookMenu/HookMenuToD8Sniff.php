@@ -69,18 +69,20 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
 
         // If we've gotten this far, eval the function
         $menu_array = Drupal7to8_Utility_ParseInfoHookArray::getHookReturnArray(file_get_contents(__DIR__ . '/drupal_menu_bootstrap.php.inc'), $function_tokens);
-
         // We're in hook_menu, throw this fixable error (to create YML files
         $fix = $phpcsFile->addFixableError('Routing functionality of hook_menu() has been replaced by new routing system: https://drupal.org/node/1800686', $stackPtr, 'HookMenuToD8');
         if ($fix === true && $phpcsFile->fixer->enabled === true) {
           // Remove the old file.
           // @todo This is not only dangerous, it also causes an error when the file
           // it was checking suddenly vanishes. ;)
-          $yaml_route = array();
+          $yaml_route = $yaml_local_tasks = array();
           foreach($menu_array AS $path => $item) {
             $item = new Drupal7to8_Sniffs_HookMenu_MenuItem($module, $path, $item);
             if($route = $item->getRouteYAML()) {
               $yaml_route += $route;
+            }
+            if($local_tasks = $item->getLocalTasksYAML()) {
+              $yaml_local_tasks += $local_tasks;
             }
           }
           Drupal7to8_Utility_CreateFile::writeYaml($module . '.routing.yml', $yaml_route);
