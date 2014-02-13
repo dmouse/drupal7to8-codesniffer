@@ -73,12 +73,12 @@ class Drupal7to8_Utility_ModuleProperties {
         array_pop($file_parts);
         continue;
       }
-      $return['module_name'] = basename($files[0], '.module');
-      $return['module_path'] = implode(DIRECTORY_SEPARATOR, $file_parts);
+      $module_properties['module_name'] = basename($files[0], '.module');
+      $module_properties['module_path'] = implode(DIRECTORY_SEPARATOR, $file_parts);
       break;
     }
 
-    return $return;
+    return $module_properties;
   }
 
   /**
