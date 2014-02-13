@@ -96,7 +96,10 @@ class Drupal7to8_Utility_CreateFile {
    *   Whether the file was written successfully.
    */
   public static function writeYaml($filename, array $data) {
-    $yaml = Yaml::dump($data);
+    $dumper  = new Dumper();
+    $dumper->setIndentation(2);
+
+    $yaml = $dumper->dump($data, PHP_INT_MAX);
     self::writeFile($filename, $yaml);
   }
 
@@ -112,6 +115,8 @@ class Drupal7to8_Utility_CreateFile {
    *   Whether the file was written successfully.
    */
   public static function readAndWriteYaml($filename, array $data) {
+    $dumper = new Dumper();
+    $dumper->setIndentation(2);
     $original_yaml = array();
     if (file_exists($filename)) {
       $contents = file_get_contents($filename);
@@ -121,8 +126,8 @@ class Drupal7to8_Utility_CreateFile {
     // but also not double-nest un-nested arrays. :P
     // In other words, this works fine for config, but will fail on menu arrays.
     $merged_data = array_merge($original_yaml, $data);
+    $yaml = $dumper->dump($data, PHP_INT_MAX);
 
     self::writeYaml($filename, $merged_data);
   }
-
 }
