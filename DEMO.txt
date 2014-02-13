@@ -1,0 +1,21 @@
+
+Show Drupal 8 directory in finder.
+
+Show modules directory, pants.
+
+Open up .info file, demonstrate it's D7.
+
+Start up a Drupal 8 site.
+
+Go to the modules page.
+
+Search for "pa" (show off the search box!)
+
+No pants. :(
+
+Run the util!
+
+Reload modules page.
+
+
+
