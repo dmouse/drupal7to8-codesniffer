@@ -7,12 +7,16 @@ class Drupal7to8_Utility_FunctionCall {
    *
    * @param PHP_CodeSniffer_File $phpcsFile
    *   The code sniffer file.
+   * @param Drupal7to8_Utility_TokensSubset $subset
+   * @param int $stackPtr
+   *
    * @return string|null
    *   The module name if it can be determined, NULL if it cannot.
    */
-  static public function isFunctionCall(PHP_CodeSniffer_File $phpcsFile, $tokens, $stackPtr) {
+  static public function isFunctionCall(PHP_CodeSniffer_File $phpcsFile, Drupal7to8_Utility_TokensSubset $subset, $stackPtr) {
 
-    if($tokens[$stackPtr]['type'] !== "T_STRING") {
+    $token_info = $subset->getToken($stackPtr);
+    if ($token_info['type'] !== "T_STRING") {
       return FALSE;
     }
     $ignore = array(
@@ -31,14 +35,16 @@ class Drupal7to8_Utility_FunctionCall {
               );
 
     $prevToken = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-    if (in_array($tokens[$prevToken]['code'], $ignore) === true) {
+    $token_info = $subset->getToken($prevToken);
+    if (in_array($token_info['code'], $ignore) === true) {
         // Not a call to a PHP function.
       return FALSE;
     }
 
     $nextToken = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($stackPtr + 1));
-    if(isset($tokens[$nextToken])) {
-      $backptr = ($tokens[$nextToken-1]['type'] == T_WHITESPACE) ? 2 : 1;
+    if ($nextToken <= $subset->getEnd()) {
+      $token_info = $subset->getToken($nextToken - 1);
+      $backptr = ($token_info['type'] == T_WHITESPACE) ? 2 : 1;
       if ($nextToken - $backptr == $stackPtr) {
         return true;
       }

@@ -56,8 +56,8 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
 
         $this->functionStart  = $tokens[$stackPtr]['scope_opener'];
         $this->functionStop = $tokens[$stackPtr]['scope_closer'];
-        $tokens = array_slice($tokens, $this->functionStart+1, ($this->functionStop - $this->functionStart - 1), true);
-        if(Drupal7to8_Utility_ParseInfoHookArray::containsLogic($tokens, $phpcsFile, $this->menu_function_whitelist)) {
+        $function_tokens = new Drupal7to8_Utility_TokensSubset($tokens, $this->functionStart + 1, ($this->functionStop - $this->functionStart - 1));
+        if (Drupal7to8_Utility_ParseInfoHookArray::containsLogic($function_tokens, $phpcsFile, $this->menu_function_whitelist)) {
           $fix = $phpcsFile->addError('Routing functionality of hook_menu() has been replaced by new routing system, conditionals found, cannot change automatically: https://drupal.org/node/1800686', $stackPtr, 'HookMenuToD8');
           // Reset functionStart to 0 to stop the parser from further processing.
           $this->functionStart = $this->functionStop = 0;
@@ -65,7 +65,7 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
         }
 
         // If we've gotten this far, eval the function
-        $menu_array = Drupal7to8_Utility_ParseInfoHookArray::getArray(file_get_contents(__DIR__ . '/drupal_menu_bootstrap.php.inc'), $tokens, $this->functionStart, $this->functionStop);
+        $menu_array = Drupal7to8_Utility_ParseInfoHookArray::getArray(file_get_contents(__DIR__ . '/drupal_menu_bootstrap.php.inc'), $function_tokens);
 
         //print_r($menu_array);
 
