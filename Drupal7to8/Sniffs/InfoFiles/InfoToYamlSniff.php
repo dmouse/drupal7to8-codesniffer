@@ -26,14 +26,6 @@ class Drupal7to8_Sniffs_InfoFiles_InfoToYamlSniff implements PHP_CodeSniffer_Sni
    * {@inheritdoc}
    */
   public function register() {
-    if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
-      require_once __DIR__ . '/../../vendor/autoload.php';
-    }
-    else {
-      print('HEY! You have to install Composer in order to get Symfony in order to parse YAML because yeah. https://getcomposer.org/download/');
-      return array();
-    }
-
     // Fire on text outside of PHP.
     return array(T_INLINE_HTML);
   }
