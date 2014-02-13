@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Drupal7to8_Sniffs_Utility_ParseInfoHookArray.
  *
@@ -12,14 +13,21 @@
 class Drupal7to8_Utility_ParseInfoHookArray {
 
   /**
-   * Determines the module name based on the file being examined.
+   * Checks whether the info hook contains logic or function calls.
    *
+   * @param Drupal7to8_Utility_TokenSubset $subset
+   *   The token subset object for the info hook.
    * @param PHP_CodeSniffer_File $phpcsFile
    *   The code sniffer file.
+   * @param array $function_whitelist
+   *   (optional) An array of functions to allow. You should ensure these
+   *   functions are available to getArray() in the $static_drupal_code
+   *   parameter.
+   *
    * @return string|null
    *   The module name if it can be determined, NULL if it cannot.
    */
-  static public function containsLogic(Drupal7to8_Utility_TokenSubset $subset, PHP_CodeSniffer_File $phpcsFile, $function_whitelist) {
+  static public function containsLogic(Drupal7to8_Utility_TokenSubset $subset, PHP_CodeSniffer_File $phpcsFile, array $function_whitelist = array()) {
     $tokens = $subset->getArray();
     foreach ($tokens as $pos => $token) {
       if (in_array($token, PHP_CodeSniffer_Tokens::$scopeOpeners) ||
