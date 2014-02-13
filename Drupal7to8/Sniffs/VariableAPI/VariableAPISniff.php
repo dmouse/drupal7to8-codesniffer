@@ -235,7 +235,7 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
     }
 
     // Add the default value to the file.
-    $config[$config_object_name] = $default_value;
+    $config[$config_object_name][$variable_name] = $default_value;
 
     // Write out YAML File.
     Drupal7to8_Utility_CreateFile::writeYaml($settings_file, $config);
