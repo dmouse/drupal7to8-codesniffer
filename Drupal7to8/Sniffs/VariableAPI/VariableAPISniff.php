@@ -9,6 +9,10 @@
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
 
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Dumper;
+
 /**
  * Handles variable_get(), variable_set() and variable_del().
  *
@@ -203,17 +207,37 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
    * at the end of the process.
    */
   function addDefaultValue(PHP_CodeSniffer_File $phpcsFile, $config_object_name, $variable_name, $default_value) {
+    if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
+      require_once __DIR__ . '/../../vendor/autoload.php';
+    }
+    else {
+      print('HEY! You have to install Composer in order to get Symfony in order to parse YAML because yeah. https://getcomposer.org/download/');
+      return array();
+    }
+
     // Determine the settings file.
     $module_properties = Drupal7to8_Utility_ModuleProperties::getModuleNameAndPath($phpcsFile);
     $settings_file = $module_properties['module_path'] . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . $config_object_name . '.yml';
 
     // Parse the YAML to see if the variable already exists
+    $config = array();
     if (file_exists($settings_file)) {
       $yaml = file_get_contents($settings_file);
-       
+      $config = Yaml::parse($yaml);
     }
+    else {
+      mkdir($module_properties['module_path'] . DIRECTORY_SEPARATOR . 'config');
+    }
+
     // If the variable exists with a different value - provide some notification???
-    // Add to file if it doesn't already exist
-    // Write out YAML File
+    if (isset($config[$config_object_name]) && $config[$config_object_name] != $default_value) {
+      // @todo: No idea how to inject stdout stuff during fixing.
+    }
+
+    // Add the default value to the file.
+    $config[$config_object_name] = $default_value;
+
+    // Write out YAML File.
+    Drupal7to8_Utility_CreateFile::writeYaml($settings_file, $config);
   }
 }
