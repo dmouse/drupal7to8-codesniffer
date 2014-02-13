@@ -22,7 +22,7 @@ use Symfony\Component\Yaml\Dumper;
  */
 class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_FunctionReplacementSniff {
 
-  protected $message = '!function() has been replaced by the Configuration API: https://drupal.org/node/2183531';
+  protected $message = '!function("!variable") has been replaced by the Configuration API: https://drupal.org/node/2183531';
 
   protected $code = 'VariableAPI';
 
@@ -33,13 +33,26 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
   );
 
   /**
+   * @var array Tracks variables that were checked, so we only return errors once.
+   */
+  protected $variablesChecked = array();
+
+  /**
    * {@inheritdoc}
    */
   protected function addError($phpcsFile, $stackPtr, $function, $pattern = NULL) {
     $fix = FALSE;
-    $message = strtr($this->message, array('!function' => $function));
 
-    $phpcsFile->addFixableError($message, $stackPtr, $this->code);
+    // Only report fixable errors once per variable name.
+    $tokens = $phpcsFile->getTokens();
+    list(,$variable) = $this->getUpdatedVariableName($phpcsFile, $stackPtr, $tokens);
+    $message = strtr($this->message, array('!function' => $function, '!variable' => $variable));
+
+    if (!isset($this->variablesChecked)) {
+      $phpcsFile->addFixableError($message, $stackPtr, $this->code);
+      $this->variablesChecked[$variable] = 1;
+    }
+
     if ($this->hasFix($function, $pattern)) {
       $fix = $phpcsFile->addFixableError($message, $stackPtr, $this->code);
     }
@@ -47,7 +60,6 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
       $this->insertFixMeComment($phpcsFile, $stackPtr, $message);
     }
     if ($fix === TRUE && $phpcsFile->fixer->enabled === TRUE) {
-      $tokens = $phpcsFile->getTokens();
       // Find the arguments that need to be moved around, remove them, and
       // dynamically build the replacement string for this function call.
       switch ($function) {
