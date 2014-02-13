@@ -56,8 +56,9 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
           list($config_object_name, $updated_varname) = $result;
 
           // Find any default values if available
-          if ($default_value = $this->getArgument($phpcsFile, $stackPtr, 1)) {
-            $this->addDefaultValue($phpcsFile, $config_object_name, $updated_varname, eval($default_value));
+          $default_value = $this->getArgument($phpcsFile, $stackPtr, 1);
+          if (!empty($default_value)) {
+            $this->addDefaultValue($phpcsFile, $config_object_name, $updated_varname, $default_value);
           }
 
           // Update to the new statement.
@@ -151,7 +152,7 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
    */
   function getArgument(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $n) {
     $tokens = $phpcsFile->getTokens();
-    $result = $this->findNthArgument($phpcsFile, $stackPtr, 0);
+    $result = $this->findNthArgument($phpcsFile, $stackPtr, $n);
     // Return early if there is no variable to get.
     if ($result === FALSE) {
       return FALSE;
