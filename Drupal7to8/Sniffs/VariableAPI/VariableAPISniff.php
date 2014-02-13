@@ -151,6 +151,11 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
     // Handle variables that we know exist elsewhere.
     $well_known_vaiable_names = array(
       'site_name' => array('system.site', 'name'),
+      'site_frontpage' => array('system.site', 'page.front'),
+      'file_temporary_path' => array('system.file', 'path.temporary'),
+      'file_private_path' => array('system.file', 'path.private'),
+      'file_public_path' => array('system.file', 'path.public'),
+      'file_directory_path' => array('system.file', 'path.public'),
       // @todo expand
     );
     if (isset($well_known_vaiable_names[$cleaned_varname])) {
