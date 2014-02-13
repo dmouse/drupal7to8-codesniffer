@@ -21,8 +21,8 @@ class Drupal7to8_Utility_ParseInfoHookArray {
    *   The code sniffer file.
    * @param array $function_whitelist
    *   (optional) An array of functions to allow. You should ensure these
-   *   functions are available to getArray() in the $static_drupal_code
-   *   parameter.
+   *   functions are available to getHookReturnArray() in the
+   *   $static_drupal_code parameter.
    *
    * @return string|null
    *   The module name if it can be determined, NULL if it cannot.
@@ -51,7 +51,7 @@ class Drupal7to8_Utility_ParseInfoHookArray {
    * @return array
    *   The return value of the info hook.
    */
-  static public function getArray($static_drupal_code, Drupal7to8_Utility_TokenSubset $token_range) {
+  static public function getHookReturnArray($static_drupal_code, Drupal7to8_Utility_TokenSubset $token_range) {
     return eval($static_drupal_code . $token_range->getContent());
   }
 }
