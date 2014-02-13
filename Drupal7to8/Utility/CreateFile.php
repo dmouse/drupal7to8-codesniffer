@@ -108,6 +108,8 @@ class Drupal7to8_Utility_CreateFile {
    *   Whether the file was written successfully.
    */
   public static function readAndWriteYaml($filename, array $data) {
+    $orignal_yaml = Yaml::parse($filename);
+    $merged_data = array_merge_recursive($original_yaml, $data);
     $yaml = Yaml::dump($data);
     self::writeYaml($filename, $yaml);
   }
