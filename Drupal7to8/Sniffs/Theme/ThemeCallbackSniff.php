@@ -41,9 +41,10 @@ class Drupal7to8_Sniffs_Theme_ThemeCallbackSniff implements PHP_CodeSniffer_Snif
     {
         $tokens = $phpcsFile->getTokens();
         if (preg_match('!^theme_.+$!', $tokens[$stackPtr+2]['content'])) {
-            $fix = $phpcsFile->addFixableError('Theme functions should be converted to Twig templates: https://drupal.org/node/1831138', $stackPtr, 'ThemeCallback');
+            $message = 'Theme functions should be converted to Twig templates: https://drupal.org/node/1831138';
+            $fix = $phpcsFile->addFixableError($message, $stackPtr, 'ThemeCallback');
             if ($fix === true && $phpcsFile->fixer->enabled === true) {
-                //$this->insertFixMeComment($phpcsFile, $stackPtr, $customMessage, $this->forbiddenFunctions[$function]);
+                //Drupal7to8_Utility_InsertContent::insertFixMeComment($phpcsFile, $stackPtr, $message);
             }
         }
     }
