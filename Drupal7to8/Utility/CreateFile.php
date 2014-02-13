@@ -79,7 +79,7 @@ class Drupal7to8_Utility_CreateFile {
     // This is BAD. Fix me!
     $path_parts = pathinfo($filename);
     if (!is_dir($path_parts['dirname'])) {
-      mkdir($path_parts['dirname'], 775, TRUE);
+      mkdir($path_parts['dirname'], 0777, TRUE);
     }
     return file_put_contents($filename, $contents);
   }
