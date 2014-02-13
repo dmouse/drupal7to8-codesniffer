@@ -70,7 +70,7 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
           }
 
           // Update to the new statement.
-          $replacement = "\Drupal::config('$config_object_name')->get($updated_varname)";
+          $replacement = "\Drupal::config('$config_object_name')->get('$updated_varname')";
 
           // Remove the original function arguments and add replacement.
           $this->updateFunctionSignature($phpcsFile, $stackPtr, $tokens, $replacement);
@@ -90,7 +90,7 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
           }
 
           // Update to the new statement.
-          $replacement = "\Drupal::config('$config_object_name')->set($updated_varname, $new_value)->save()";
+          $replacement = "\Drupal::config('$config_object_name')->set('$updated_varname', $new_value)->save()";
 
           // Remove the original function arguments and add replacement.
           $this->updateFunctionSignature($phpcsFile, $stackPtr, $tokens, $replacement);
@@ -105,7 +105,7 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
           list($config_object_name, $updated_varname) = $result;
 
           // Update to the new statement.
-          $replacement = "\Drupal::config('$config_object_name')->clear($updated_varname)->save()";
+          $replacement = "\Drupal::config('$config_object_name')->clear('$updated_varname')->save()";
 
           // Remove the original function arguments and add replacement.
           $this->updateFunctionSignature($phpcsFile, $stackPtr, $tokens, $replacement);
