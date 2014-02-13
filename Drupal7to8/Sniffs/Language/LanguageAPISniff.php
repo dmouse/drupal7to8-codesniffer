@@ -80,6 +80,9 @@ class Drupal7to8_Sniffs_Language_LanguageAPISniff extends Drupal7to8_Base_Functi
                 Drupal7to8_Utility_InsertContent::insertFixMeComment($phpcsFile, $stackPtr, $customMessage, $this->forbiddenFunctions[$function]);
             }
         }
+        else {
+            parent::addError($phpcsFile, $stackPtr, $function, $pattern);
+        }
     }
 
 }
