@@ -19,7 +19,7 @@ class Drupal7to8_Utility_ParseInfoHookArray {
    * @return string|null
    *   The module name if it can be determined, NULL if it cannot.
    */
-  static public function containsLogic(Drupal7to8_Utility_TokensSubset $subset, PHP_CodeSniffer_File $phpcsFile, $function_whitelist) {
+  static public function containsLogic(Drupal7to8_Utility_TokenSubset $subset, PHP_CodeSniffer_File $phpcsFile, $function_whitelist) {
     $tokens = $subset->getArray();
     foreach ($tokens as $pos => $token) {
       if (in_array($token, PHP_CodeSniffer_Tokens::$scopeOpeners) ||
@@ -30,7 +30,7 @@ class Drupal7to8_Utility_ParseInfoHookArray {
     return FALSE;
   }
 
-  static public function getArray($static_drupal_code, Drupal7to8_Utility_TokensSubset $token_range) {
+  static public function getArray($static_drupal_code, Drupal7to8_Utility_TokenSubset $token_range) {
     return eval($static_drupal_code . $token_range->getContent());
   }
 }

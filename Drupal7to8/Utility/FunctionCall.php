@@ -7,13 +7,13 @@ class Drupal7to8_Utility_FunctionCall {
    *
    * @param PHP_CodeSniffer_File $phpcsFile
    *   The code sniffer file.
-   * @param Drupal7to8_Utility_TokensSubset $subset
+   * @param Drupal7to8_Utility_TokenSubset $subset
    * @param int $stackPtr
    *
    * @return string|null
    *   The module name if it can be determined, NULL if it cannot.
    */
-  static public function isFunctionCall(PHP_CodeSniffer_File $phpcsFile, Drupal7to8_Utility_TokensSubset $subset, $stackPtr) {
+  static public function isFunctionCall(PHP_CodeSniffer_File $phpcsFile, Drupal7to8_Utility_TokenSubset $subset, $stackPtr) {
 
     $token_info = $subset->getToken($stackPtr);
     if ($token_info['type'] !== "T_STRING") {

@@ -56,7 +56,7 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
 
         $this->functionStart  = $tokens[$stackPtr]['scope_opener'];
         $this->functionStop = $tokens[$stackPtr]['scope_closer'];
-        $function_tokens = new Drupal7to8_Utility_TokensSubset($tokens, $this->functionStart + 1, ($this->functionStop - $this->functionStart - 1));
+        $function_tokens = new Drupal7to8_Utility_TokenSubset($tokens, $this->functionStart + 1, ($this->functionStop - $this->functionStart - 1));
         if (Drupal7to8_Utility_ParseInfoHookArray::containsLogic($function_tokens, $phpcsFile, $this->menu_function_whitelist)) {
           $fix = $phpcsFile->addError('Routing functionality of hook_menu() has been replaced by new routing system, conditionals found, cannot change automatically: https://drupal.org/node/1800686', $stackPtr, 'HookMenuToD8');
           // Reset functionStart to 0 to stop the parser from further processing.

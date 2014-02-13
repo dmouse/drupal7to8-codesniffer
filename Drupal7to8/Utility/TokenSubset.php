@@ -1,6 +1,6 @@
 <?php
 /**
- * Drupal7to8_Sniffs_Utility_TokensSubset.
+ * Drupal7to8_Sniffs_Utility_TokenSubset.
  *
  * PHP version 5
  *
@@ -9,7 +9,7 @@
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
 
-class Drupal7to8_Utility_TokensSubset {
+class Drupal7to8_Utility_TokenSubset {
 
   /**
    * @var array
