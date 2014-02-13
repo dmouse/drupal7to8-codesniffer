@@ -91,15 +91,22 @@ class Drupal7to8_Utility_CreateFile {
    *   The file to write.
    * @param array $data
    *   An associative array to convert to YAML.
+   * @param string $prepend_comment
+   *   A comment which should be prepended to the YAML file, e.g. a to-do.
    *
    * @return bool
    *   Whether the file was written successfully.
    */
-  public static function writeYaml($filename, array $data) {
+  public static function writeYaml($filename, array $data, $prepend_comment = '') {
     $dumper  = new Dumper();
     $dumper->setIndentation(2);
 
     $yaml = $dumper->dump($data, PHP_INT_MAX);
+
+    if (!empty($prepend_comment)) {
+      $yaml = "# $prepend_comment\n" . $yaml;
+    }
+
     self::writeFile($filename, $yaml);
   }
 
@@ -110,11 +117,13 @@ class Drupal7to8_Utility_CreateFile {
    *   The file to write.
    * @param array $data
    *   An associative array to convert to YAML.
+   * @param string $prepend_comment
+   *   A comment which should be prepended to the YAML file, e.g. a to-do.
    *
    * @return bool
    *   Whether the file was written successfully.
    */
-  public static function readAndWriteYaml($filename, array $data) {
+  public static function readAndWriteYaml($filename, array $data, $prepend_comment = '') {
     $dumper = new Dumper();
     $dumper->setIndentation(2);
     $original_yaml = array();
@@ -128,6 +137,6 @@ class Drupal7to8_Utility_CreateFile {
     $merged_data = array_merge($original_yaml, $data);
     $yaml = $dumper->dump($data, PHP_INT_MAX);
 
-    self::writeYaml($filename, $merged_data);
+    self::writeYaml($filename, $merged_data, $prepend_comment);
   }
 }

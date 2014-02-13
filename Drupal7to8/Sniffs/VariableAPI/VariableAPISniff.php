@@ -229,7 +229,10 @@ class Drupal7to8_Sniffs_VariableAPI_VariableAPISniff extends Drupal7to8_Base_Fun
     // Add the default value to the file.
     $config[$variable_name] = $default_value;
 
+    // Add a comment to consider State API instead.
+    $comment = "@fixme: To make things easy, we've ported all variables to the config system. But consider if any of the below need to be converted to the state system instead; https://drupal.org/node/1790518";
+
     // Write out YAML File.
-    Drupal7to8_Utility_CreateFile::readAndWriteYaml($settings_file, $config);
+    Drupal7to8_Utility_CreateFile::readAndWriteYaml($settings_file, $config, $comment);
   }
 }
