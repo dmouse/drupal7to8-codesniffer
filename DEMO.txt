@@ -2,15 +2,22 @@ SETUP
 =====
 
 1. Get a D8 site installed.
+
+   drush si --account-pass=admin --site-name="Drupal 8" -y
+
 2. cd modules
 3. Get the old verison of D7 pants module before it became all fancy.
 
-   git clone --branch 7.x-1.x http://git.drupal.org/project/pants.git
-   git checkout 7.x-legacy
+   git clone --branch 7.x-legacy webchick@git.drupal.org:project/pants.git
 
+4. Have a browser w/ tabs opened to D8 site, list-changes, and project page
+
+5. Open up CLI in 2nd desktop ctrl+cmd+F to the ~/Sites/8.x/modules/pants directory.
 
 DEMO
 ====
+
+Show Drupal 8 website.
 
 Show Drupal 8 directory in finder.
 
@@ -18,7 +25,7 @@ Show modules directory, pants.
 
 Open up .info file, demonstrate it's D7.
 
-Start up a Drupal 8 site.
+--
 
 Go to the modules page.
 
@@ -26,9 +33,69 @@ Search for "pa" (show off the search box!)
 
 No pants. :(
 
-Run the util!
+--
 
-Reload modules page.
+switch to command line
 
+Run phpcs --standard=Drupal7to8 .
 
+Explain that this is a standard PHP library called CodeSniffer
+that is traditionally used for detecting coding standard violations.
+We are using it to flag D7 code that needs to be converted to D8.
+
+Explain error output: regular vs. X
+
+(flip to browser)
+Go to list-changes and show one of the change notices to show them how that works.
+(flip back to command line)
+
+run phpcbf --standard=Drupal7to8 .
+
+Explain that this is actualy going to run "fixer" routines on the problems that 
+were found.
+"1 file patched" == 1 file modified, it's done!
+
+--
+
+Flip back to the modules page.
+Reload, search for pants.
+
+Hooray! It's there.
+
+Check checkbox and hit submit.
+
+"What's going to happen?"
+(show of hands)
+
+TA-DA! NO errors!
+
+---
+
+(flip back to cli)
+
+Let's look at what it does under the hood.
+
+git add .
+git diff --cached
+
+(keep scrolling down the page, talking as you go.)
+
+Highlight:
+
+- default configuration
+- block plugins - oo - boilerplate
+- info file to yaml
+- @fixme
+- variable_get()/set() calls
+- routing yml
+
+---
+
+(flip to presentation)
+
+Show final slide.
+
+TA-DA.
+
+*bow* :)
 
