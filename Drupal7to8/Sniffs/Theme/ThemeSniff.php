@@ -17,7 +17,7 @@
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
 class Drupal7to8_Sniffs_Theme_ThemeSniff extends Drupal7to8_Base_FunctionReplacementSniff {
-
+/*
     protected $message = 'Instead of directly calling !function(), use render arrays: https://drupal.org/node/2195739';
 
     protected $code = 'Theme';
@@ -26,5 +26,5 @@ class Drupal7to8_Sniffs_Theme_ThemeSniff extends Drupal7to8_Base_FunctionReplace
     protected $forbiddenFunctions = array(
         'theme' => NULL,
     );
-
+*/
 }

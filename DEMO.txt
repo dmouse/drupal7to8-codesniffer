@@ -1,3 +1,17 @@
+SETUP
+=====
+
+0. Install a Drupal 7 site w/ Pants module.
+1. Get a D8 site installed.
+2. cd modules
+3. Get the old verison of D7 pants module before it became all fancy.
+
+   git clone --branch 7.x-1.x http://git.drupal.org/project/pants.git
+   git checkout 7.x-legacy
+
+
+DEMO
+====
 
 Show Drupal 8 directory in finder.
 
