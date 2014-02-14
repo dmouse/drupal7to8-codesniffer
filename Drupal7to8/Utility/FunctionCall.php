@@ -1,17 +1,22 @@
 <?php
 
+/**
+ * Provides handling for function call tokens.
+ */
 class Drupal7to8_Utility_FunctionCall {
 
   /**
-   * Determine the module name based on the file being examined.
+   * Determines whether a token is a function call.
    *
    * @param PHP_CodeSniffer_File $phpcsFile
    *   The code sniffer file.
    * @param Drupal7to8_Utility_TokenSubset $subset
+   *   A token subset containing a potential function name
    * @param int $stackPtr
+   *   The index of the token within $subset that may be a function name.
    *
-   * @return string|null
-   *   The module name if it can be determined, NULL if it cannot.
+   * @return bool
+   *   Whether or not the token represents a function call.
    */
   static public function isFunctionCall(PHP_CodeSniffer_File $phpcsFile, Drupal7to8_Utility_TokenSubset $subset, $stackPtr) {
 
@@ -46,10 +51,10 @@ class Drupal7to8_Utility_FunctionCall {
       $token_info = $subset->getToken($nextToken - 1);
       $backptr = ($token_info['type'] == T_WHITESPACE) ? 2 : 1;
       if ($nextToken - $backptr == $stackPtr) {
-        return true;
+        return TRUE;
       }
     }
-    return false;
+    return FALSE;
   }
-}
 
+}
