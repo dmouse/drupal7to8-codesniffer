@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Drupal7to8_Sniffs_HookBlockInfo_HookBlockInfo.
  *
