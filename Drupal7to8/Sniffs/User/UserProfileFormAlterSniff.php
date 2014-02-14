@@ -32,7 +32,7 @@ class Drupal7to8_Sniffs_User_UserProfileFormAlterSniff extends Drupal7to8_Base_H
    * {@inheritdoc}
    */
   protected function fix(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $module, $hook) {
-    $customMessage = 'hook_form_user_profile_form_alter() was renamed, but neither $form["#user_category"] nor $form_state["user"] exist anymore.';
+    $customMessage = 'hook_form_user_profile_form_alter() was renamed, but neither $form["#user_category"] nor $form_state["user"] exist anymore. See https://drupal.org/node/1734556.';
     Drupal7to8_Utility_InsertContent::insertFixMeComment($phpcsFile, $stackPtr +2, $customMessage);
   }
 
