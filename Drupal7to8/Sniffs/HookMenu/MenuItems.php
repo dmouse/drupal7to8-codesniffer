@@ -39,7 +39,7 @@ class Drupal7to8_Sniffs_HookMenu_MenuItems {
 
   protected function getYamlKey($path) {
     $menu_key = '';
-    xdebug_break();
+
     if ($this->menu_items[$path]['page callback'] == 'drupal_get_form') {
       //Do some form includy stuff here.
       $callback = explode('_', $this->menu_items[$path]['page arguments'][0]);
