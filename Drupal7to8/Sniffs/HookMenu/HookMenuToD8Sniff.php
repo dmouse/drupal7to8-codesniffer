@@ -78,8 +78,12 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
           // it was checking suddenly vanishes. ;)
           $yaml_route = $yaml_local_tasks = array();
           $menu = new Drupal7to8_Sniffs_HookMenu_MenuItems($module, $menu_array);
-          Drupal7to8_Utility_CreateFile::writeYaml($module . '.routing.yml', $menu->getRouteYAML());
-          Drupal7to8_Utility_CreateFile::writeYaml($module . '.local_tasks.yml', $menu->getLocalTasksYAML());
+          if ($routing = $menu->getRouteYAML()) {
+            Drupal7to8_Utility_CreateFile::writeYaml($module . '.routing.yml', $routing);
+          }
+          if($local_tasks = $menu->getLocalTasksYAML()) {
+            Drupal7to8_Utility_CreateFile::writeYaml($module . '.local_tasks.yml', $local_tasks);
+          }
         }
       }
   }//end process()
