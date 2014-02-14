@@ -12,25 +12,9 @@
 class Drupal7to8_Utility_TokenSubset {
 
   /**
-   * The token subset.
-   *
    * @var array
    */
   protected $tokens = NULL;
-
-  /**
-   * The index of the start token.
-   *
-   * @var int
-   */
-  protected $start = 0;
-
-  /**
-   * The index of the end token.
-   *
-   * @var int
-   */
-  protected $end = 0;
 
   /**
    * Generates a tokens subset object for a given range of tokens.
@@ -41,8 +25,6 @@ class Drupal7to8_Utility_TokenSubset {
    * @param int $end
    */
   public function __construct($tokens, $start, $end) {
-    $this->start = $start;
-    $this->end = $end;
     $this->tokens = array_slice($tokens, $start, $end, TRUE);
   }
 
@@ -72,7 +54,8 @@ class Drupal7to8_Utility_TokenSubset {
    * @return int
    */
   public function getStart() {
-    return $this->start;
+    $token_keys = array_keys($this->tokens);
+    return array_shift($token_keys);
   }
 
   /**
@@ -81,7 +64,8 @@ class Drupal7to8_Utility_TokenSubset {
    * @return int
    */
   public function getEnd() {
-    return $this->end;
+    $token_keys = array_keys($this->tokens);
+    return array_pop($token_keys);
   }
 
   /**
