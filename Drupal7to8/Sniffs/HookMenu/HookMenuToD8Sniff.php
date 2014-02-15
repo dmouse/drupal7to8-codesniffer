@@ -22,8 +22,6 @@ use Symfony\Component\Yaml\Dumper;
 
 class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sniff {
 
-  protected $functionStart = 0;
-  protected $functionStop = 0;
   protected $array_parent = FALSE;
   protected $return_var = '';
   protected $menu_paths = array();
@@ -54,16 +52,15 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
       $tokens = $phpcsFile->getTokens();
       $module = Drupal7to8_Utility_ModuleProperties::getModuleName($phpcsFile);
 
-      if ($tokens[$stackPtr]['type'] == 'T_FUNCTION' &&
-         ($tokens[$stackPtr+2]['content'] == $module . '_menu' || $tokens[$stackPtr+2]['content'] == 'hook_menu')) {
+      // Halt processing if this is not a hook_menu() declaration.
+      if (!Drupal7to8_Utility_ParseInfoHookArray::isHookImplementation('hook_menu', $phpcsFile, $stackPtr)) {
+        return;
+      }
 
-        $this->functionStart  = $tokens[$stackPtr]['scope_opener'];
-        $this->functionStop = $tokens[$stackPtr]['scope_closer'];
-        $function_tokens = new Drupal7to8_Utility_TokenSubset($tokens, $this->functionStart + 1, ($this->functionStop - $this->functionStart - 1));
+
+      $function_tokens = Drupal7to8_Utility_ParseInfoHookArray::getFunctionContentTokens($phpcsFile, $stackPtr);
         if (Drupal7to8_Utility_ParseInfoHookArray::containsLogic($function_tokens, $phpcsFile, $this->menu_function_whitelist)) {
           $fix = $phpcsFile->addError('Routing functionality of hook_menu() has been replaced by new routing system, conditionals found, cannot change automatically: https://drupal.org/node/1800686', $stackPtr, 'HookMenuToD8');
-          // Reset functionStart to 0 to stop the parser from further processing.
-          $this->functionStart = $this->functionStop = 0;
           return;
         }
 
@@ -79,12 +76,11 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
           $yaml_route = $yaml_local_tasks = array();
           $menu = new Drupal7to8_Sniffs_HookMenu_MenuItems($module, $menu_array);
           if ($routing = $menu->getRouteYAML()) {
-            Drupal7to8_Utility_CreateFile::writeYaml($module . '.routing.yml', $routing);
+            Drupal7to8_Utility_CreateFile::writeYaml(Drupal7to8_Utility_ModuleProperties::getModuleFilePath($phpcsFile, $module . '.routing.yml'), $routing);
           }
           if($local_tasks = $menu->getLocalTasksYAML()) {
-            Drupal7to8_Utility_CreateFile::writeYaml($module . '.local_tasks.yml', $local_tasks);
+            Drupal7to8_Utility_CreateFile::writeYaml(Drupal7to8_Utility_ModuleProperties::getModuleFilePath($phpcsFile, $module . '.local_tasks.yml'), $local_tasks);
           }
         }
       }
-  }//end process()
 }
