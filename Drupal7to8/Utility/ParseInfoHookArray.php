@@ -36,7 +36,7 @@ class Drupal7to8_Utility_ParseInfoHookArray {
       throw new \Exception("$hook_name must begin with 'hook_'");
     }
 
-    if ($phpcsFile->getDeclarationName($stackPtr) == $module_name . '_' . substr($hook_name, 4)) {
+    if ($phpcsFile->getDeclarationName($stackPtr) == $module_name . '_' . substr($hook_name, 5)) {
       return TRUE;
     }
 
@@ -74,7 +74,7 @@ class Drupal7to8_Utility_ParseInfoHookArray {
       throw new \Exception("Token pointer $stackPtr must be a T_FUNCTION token.");
     }
     // Return the token subset between, but not including, the { and }.
-    return Drupal7to8_Utility_TokenSubset($tokens, $tokens[$stackPtr]['scope_opener'] + 1, $tokens[$stackPtr]['scope_closer'] - 1);
+    return new Drupal7to8_Utility_TokenSubset($tokens, $tokens[$stackPtr]['scope_opener'] + 1, $tokens[$stackPtr]['scope_closer'] - 1);
   }
 
   /**
