@@ -26,7 +26,7 @@ class Drupal7to8_Utility_ParseInfoHookArray {
    *   TRUE if the token declares the invocation of the given hook for the
    *   current module, or FALSE otherwise.
    */
-  public static function isHookInvocation($hook_name, PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+  public static function isHookImplementation($hook_name, PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
     $tokens = $phpcsFile->getTokens();
     $module_name = Drupal7to8_Utility_ModuleProperties::getModuleName($phpcsFile);
     if ($tokens[$stackPtr]['type'] != 'T_FUNCTION') {
