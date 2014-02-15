@@ -25,7 +25,7 @@ class Drupal7to8_Utility_TokenSubset {
    * @param int $end
    */
   public function __construct($tokens, $start, $end) {
-    $this->tokens = array_slice($tokens, $start, $end, TRUE);
+    $this->tokens = array_slice($tokens, $start, $end - $start, TRUE);
   }
 
   /**
