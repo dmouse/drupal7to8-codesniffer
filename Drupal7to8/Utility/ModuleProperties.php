@@ -112,4 +112,22 @@ class Drupal7to8_Utility_ModuleProperties {
     return implode(DIRECTORY_SEPARATOR, $path_parts);
   }
 
+  /**
+   * Returns the absolute path for the given filepath in the module.
+   *
+   * @param PHP_CodeSniffer_File $phpcsFile
+   *   The code sniffer file.
+   * @param string $filepath
+   *   The relative path and name for the file within the module directory, for
+   *   example, config/mymodule.settings.yml.
+   *
+   * @return string|null
+   *   The absolute path to the file if it can be determined, or NULL.
+   */
+  public static function getModuleFilePath(PHP_CodeSniffer_File $phpcsFile, $filepath) {
+    if ($module_path = static::getModulePath($phpcsFile)) {
+      return $module_path . DIRECTORY_SEPARATOR . $filepath;
+    }
+  }
+
 }
