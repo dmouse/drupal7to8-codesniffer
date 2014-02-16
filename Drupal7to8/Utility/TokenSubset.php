@@ -68,6 +68,7 @@ class Drupal7to8_Utility_TokenSubset {
    * Get the stored token range.
    *
    * @return array
+   *   All tokens for the subset, indexed by the original index.
    */
   public function getArray() {
     return $this->tokens;
@@ -77,8 +78,10 @@ class Drupal7to8_Utility_TokenSubset {
    * Get the token at the given position.
    *
    * @param int $pos
+   *   The position index.
    *
    * @return array
+   *   The complete array for the token.
    */
   public function getToken($pos) {
     return $this->tokens[$pos];
@@ -88,6 +91,7 @@ class Drupal7to8_Utility_TokenSubset {
    * Returns the start position of this token subset.
    *
    * @return int
+   *   The index of the starting token.
    */
   public function getStart() {
     return $this->start;
@@ -97,6 +101,7 @@ class Drupal7to8_Utility_TokenSubset {
    * Returns the end position of this token subset.
    *
    * @return int
+   *   The index of the end token.
    */
   public function getEnd() {
     return $this->end;
