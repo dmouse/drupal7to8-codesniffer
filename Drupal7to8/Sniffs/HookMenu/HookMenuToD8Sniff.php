@@ -48,24 +48,23 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
    * @return void
    */
   public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
-    $tokens = $phpcsFile->getTokens();
-    $module = Drupal7to8_Utility_ModuleProperties::getModuleName($phpcsFile);
+    $function = new  Drupal7to8_Utility_InfoHook($phpcsFile, $stackPtr);
 
-    // Halt processing if this is not a hook_menu() declaration.
-    if (!Drupal7to8_Utility_ParseInfoHookArray::isHookImplementation('hook_menu', $phpcsFile, $stackPtr)) {
+    // Only proceed if this is a hook_menu() declaration.
+    if (!$function->isHookImplementation('hook_menu')) {
       return;
     }
+    $module = Drupal7to8_Utility_ModuleProperties::getModuleName($phpcsFile);
 
-
-    $function_tokens = Drupal7to8_Utility_ParseInfoHookArray::getFunctionContentTokens($phpcsFile, $stackPtr);
-    if (Drupal7to8_Utility_ParseInfoHookArray::containsLogic($function_tokens, $phpcsFile, $this->menu_function_whitelist)) {
+    // If the function contains logic, add a non-fixable error.
+    if ($function->containsLogic($this->menu_function_whitelist)) {
       $fix = $phpcsFile->addError('Routing functionality of hook_menu() has been replaced by new routing system, conditionals found, cannot change automatically: https://drupal.org/node/1800686', $stackPtr, 'HookMenuToD8');
       return;
     }
 
-    // If we've gotten this far, eval() the function.
+    // Otherwise, the function is safe to evaluate for its return value.
     include_once 'menu_constants.inc';
-    $menu_array = Drupal7to8_Utility_ParseInfoHookArray::getHookReturnArray(file_get_contents(__DIR__ . '/drupal_menu_bootstrap.php.inc'), $function_tokens);
+    $menu_array = $function->getHookReturnArray(file_get_contents(__DIR__ . '/drupal_menu_bootstrap.php.inc'));
     // We're in hook_menu(). Throw this fixable error (to create YML files).
     $fix = $phpcsFile->addFixableError('Routing functionality of hook_menu() has been replaced by new routing system: https://drupal.org/node/1800686', $stackPtr, 'HookMenuToD8');
     if ($fix === true && $phpcsFile->fixer->enabled === true) {
