@@ -122,4 +122,26 @@ class Drupal7to8_Utility_TokenSubset {
     return $content;
   }
 
+  /**
+   * Checks whether the token subset contains logic or function calls.
+   *
+   * @param array $function_whitelist
+   *   (optional) An array of functions to allow. You should ensure these
+   *   functions are available to getHookReturnArray() in the
+   *   $static_drupal_code parameter.
+   *
+   * @return bool
+   *   Whether the tokens include any logic or function calls.
+   */
+  public function containsLogic(array $function_whitelist = array()) {
+    $tokens = $this->getArray();
+    foreach ($tokens as $pos => $token) {
+      if (in_array($token, PHP_CodeSniffer_Tokens::$scopeOpeners) ||
+        (Drupal7to8_Utility_FunctionCall::isFunctionCall($this->phpcsFile, $this, $pos)) && !in_array($token['content'], $function_whitelist)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
 }
