@@ -126,9 +126,7 @@ class Drupal7to8_Utility_TokenSubset {
    * Checks whether the token subset contains logic or function calls.
    *
    * @param array $function_whitelist
-   *   (optional) An array of functions to allow. You should ensure these
-   *   functions are available to getHookReturnArray() in the
-   *   $static_drupal_code parameter.
+   *   (optional) An array of functions to allow.
    *
    * @return bool
    *   Whether the tokens include any logic or function calls.
