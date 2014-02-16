@@ -22,9 +22,11 @@ use Symfony\Component\Yaml\Dumper;
 
 class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sniff {
 
-  protected $array_parent = FALSE;
-  protected $return_var = '';
-  protected $menu_paths = array();
+  /**
+   * Functions to whitelist when evaluating a hook_menu() return value.
+   *
+   * @var array
+   */
   protected $menu_function_whitelist = array('drupal_get_path', 't');
 
   /**
@@ -32,11 +34,9 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
    *
    * @return array
    */
-  public function register()
-  {
+  public function register() {
     return array(T_FUNCTION);
-
-  }//end register()
+  }
 
   /**
    * Processes this test, when one of its tokens is encountered.
