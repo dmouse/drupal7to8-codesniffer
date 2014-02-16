@@ -9,23 +9,59 @@
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
 
+/**
+ * Defines a subset of tokens from a codesniffer file.
+ */
 class Drupal7to8_Utility_TokenSubset {
 
   /**
+   * The array of token information, keyed by the original token index.
+   *
    * @var array
    */
-  protected $tokens = NULL;
+  protected $tokens = array();
+
+  /**
+   * The starting token index.
+   *
+   * @var int
+   */
+  protected $start = 0;
+
+  /**
+   * The ending token index.
+   *
+   * @var int
+   */
+  protected $end = 0;
+
+  /**
+   * The Code Sniffer file object to which the tokens belong.
+   *
+   * @var PHP_CodeSniffer_File
+   */
+  protected $phpcsFile;
 
   /**
    * Generates a tokens subset object for a given range of tokens.
    *
-   * @param array $tokens
-   *   Array of tokens as returned by PHP_CodeSniffer_File::getTokens()
+   * @param PHP_CodeSniffer_File $phpcsFile
+   *   The code sniffer file.
    * @param int $start
+   *   The index of the token to start from.
    * @param int $end
+   *   The index of the token to end with.
    */
-  public function __construct($tokens, $start, $end) {
-    $this->tokens = array_slice($tokens, $start, $end - $start, TRUE);
+  public function __construct(PHP_CodeSniffer_File $phpcsFile, $start, $end) {
+    $tokens = $phpcsFile->getTokens();
+    $this->start = $start;
+    $this->end = $end;
+    $this->phpcsFile = $phpcsFile;
+
+    // Add 1 to include the final token in the array slice. For example, if the
+    // start token is 0 and the end token is 4, the length should be 5.
+    $length = $end - $start + 1;
+    $this->tokens = array_slice($tokens, $start, $length, TRUE);
   }
 
   /**
@@ -54,8 +90,7 @@ class Drupal7to8_Utility_TokenSubset {
    * @return int
    */
   public function getStart() {
-    $token_keys = array_keys($this->tokens);
-    return array_shift($token_keys);
+    return $this->start;
   }
 
   /**
@@ -64,17 +99,14 @@ class Drupal7to8_Utility_TokenSubset {
    * @return int
    */
   public function getEnd() {
-    $token_keys = array_keys($this->tokens);
-    return array_pop($token_keys);
+    return $this->end;
   }
 
   /**
    * Retrieves the content (string representation) for a range of tokens.
    *
-   * @param array $tokens
-   *   Array of tokens as returned by PHP_CodeSniffer_File::getTokens()
-   * @param int $start
-   * @param int $end
+   * @return string content
+   *   A string of the full range of content for the set.
    */
   public function getContent() {
     $content = '';
