@@ -53,8 +53,15 @@ class Drupal7to8_Sniffs_HookBlockInfo_HookBlockInfoSniff implements PHP_CodeSnif
    * @return void
    */
   public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
-    $function = new Drupal7to8_Utility_InfoHook($phpcsFile, $stackPtr);
-    $module_name = Drupal7to8_Utility_ModuleProperties::getModuleName($phpcsFile);
+    // Only process a valid InfoHook.
+    try {
+      $function = new Drupal7to8_Utility_InfoHook($phpcsFile, $stackPtr);
+    }
+    catch (Drupal7to8_Exception_InvalidSubsetException $e) {
+      return;
+    }
+
+
     // Only act on hook_block_info() and hook_block_view().
     // @todo Support hook_block_view() later.
     if (!$function->isHookImplementation('hook_block_info')) {

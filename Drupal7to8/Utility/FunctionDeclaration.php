@@ -50,9 +50,12 @@ class Drupal7to8_Utility_FunctionDeclaration extends Drupal7to8_Utility_TokenSub
 
     // Only T_FUNCTION tokens are valid.
     if ($tokens[$functionTokenIndex]['type'] != 'T_FUNCTION') {
-      throw new \Exception("Token pointer $functionTokenIndex must be a T_FUNCTION token.");
+      throw new Drupal7to8_Exception_InvalidSubsetException("Token pointer $functionTokenIndex must be a T_FUNCTION token.");
     }
-
+    // Only non-empty function definitions are valid.
+    if (empty($tokens[$functionTokenIndex]['scope_opener'])) {
+      throw new Drupal7to8_Exception_InvalidSubsetException("Function defined at $functionTokenIndex must not be empty.");
+    }
     $this->functionTokenIndex = $functionTokenIndex;
 
     // Use the token subset between, but not including, the { and }.
