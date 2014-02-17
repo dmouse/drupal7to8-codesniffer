@@ -48,7 +48,7 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
    * @return void
    */
   public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
-    $function = new  Drupal7to8_Utility_InfoHook($phpcsFile, $stackPtr);
+    $function = new Drupal7to8_Utility_InfoHook($phpcsFile, $stackPtr);
 
     // Only proceed if this is a hook_menu() declaration.
     if (!$function->isHookImplementation('hook_menu')) {
@@ -57,7 +57,8 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
     $module = Drupal7to8_Utility_ModuleProperties::getModuleName($phpcsFile);
 
     // If the function contains logic, add a non-fixable error.
-    if ($function->containsLogic($this->menu_function_whitelist)) {
+    $function->setWhitelist($this->menu_function_whitelist);
+    if ($function->containsLogic()) {
       $fix = $phpcsFile->addError('Routing functionality of hook_menu() has been replaced by new routing system, conditionals found, cannot change automatically: https://drupal.org/node/1800686', $stackPtr, 'HookMenuToD8');
       return;
     }

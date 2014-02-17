@@ -43,6 +43,13 @@ class Drupal7to8_Utility_TokenSubset {
   protected $phpcsFile;
 
   /**
+   * A list of function call names to whitelist (allow) during processing.
+   *
+   * @var array
+   */
+  protected $whitelist = array();
+
+  /**
    * Generates a tokens subset object for a given range of tokens.
    *
    * @param PHP_CodeSniffer_File $phpcsFile
@@ -123,6 +130,19 @@ class Drupal7to8_Utility_TokenSubset {
   }
 
   /**
+   * Sets the function whitelist for function calls to allow during processing.
+   *
+   * @param array $whitelist
+   *   An array of function names to whitelist, e.g. array('t', 'check_plain').
+   *
+   * @return $this
+   */
+  public function setWhitelist(array $whitelist) {
+    $this->whitelist = $whitelist;
+    return $this;
+  }
+
+  /**
    * Checks whether the token subset contains logic or function calls.
    *
    * @param array $function_whitelist
@@ -131,11 +151,11 @@ class Drupal7to8_Utility_TokenSubset {
    * @return bool
    *   Whether the tokens include any logic or function calls.
    */
-  public function containsLogic(array $function_whitelist = array()) {
+  public function containsLogic() {
     $tokens = $this->getArray();
     foreach ($tokens as $pos => $token) {
       if (in_array($token, PHP_CodeSniffer_Tokens::$scopeOpeners) ||
-        (Drupal7to8_Utility_FunctionCall::isFunctionCall($this->phpcsFile, $this, $pos)) && !in_array($token['content'], $function_whitelist)) {
+        (Drupal7to8_Utility_FunctionCall::isFunctionCall($this->phpcsFile, $this, $pos)) && !in_array($token['content'], $this->whitelist)) {
         return TRUE;
       }
     }
