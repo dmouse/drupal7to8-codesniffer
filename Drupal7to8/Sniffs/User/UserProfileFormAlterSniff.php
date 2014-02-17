@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_User_UserProfileFormAlterSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * hook_form_user_profile_form_alter() was renamed.

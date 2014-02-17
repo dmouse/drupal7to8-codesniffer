@@ -1,16 +1,6 @@
 <?php
 
 /**
- * Drupal7to8_Sniffs_Utility_FunctionDeclaration.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
-
-/**
  * Defines a token subset for the contents of a function declaration.
  *
  * This subset will contain the tokens for the contents of the function only,

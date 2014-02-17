@@ -1,16 +1,6 @@
 <?php
 
 /**
- * Drupal7to8_Sniffs_Utility_InfoHook.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
-
-/**
  * Defines a token subset for the contents of an info hook implementation.
  */
 class Drupal7to8_Utility_InfoHook extends Drupal7to8_Utility_FunctionDeclaration {

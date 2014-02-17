@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Theme_ThemeSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * theme() is deprecated.

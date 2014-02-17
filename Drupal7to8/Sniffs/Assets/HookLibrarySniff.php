@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Assets_HookLibrarySniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * hook_library() and hook_library_alter() have been renamed to

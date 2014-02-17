@@ -1,13 +1,4 @@
 <?php
-  /**
-   * Drupal7to8_Sniffs_HookMenu_HookMenuToD8.
-   *
-   * PHP version 5
-   *
-   * @category PHP
-   * @package  PHP_CodeSniffer
-   * @link     http://pear.php.net/package/PHP_CodeSniffer
-   */
 
   /**
    * Warns that .info files are now .info.yml files.

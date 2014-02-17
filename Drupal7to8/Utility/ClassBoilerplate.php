@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Utility_ClassBoilerplate
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * Utility class for writing out class files based on boilerplate templates.

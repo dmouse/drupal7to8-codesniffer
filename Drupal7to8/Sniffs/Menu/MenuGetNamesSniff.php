@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Menu_MenuGetNamesSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * menu_get_names() was removed.

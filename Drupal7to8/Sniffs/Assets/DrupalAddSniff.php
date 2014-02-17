@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Assets_DrupalAddSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * Handles drupal_add_js(), drupal_add_css() and drupal_add_library().

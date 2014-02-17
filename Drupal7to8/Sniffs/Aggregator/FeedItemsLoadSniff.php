@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Aggregator_FeedItemsLoadSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * aggregator_feed_items_load() renamed to aggregator_load_feed_items().

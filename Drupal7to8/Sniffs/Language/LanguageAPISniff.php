@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Language_LanguageAPISniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * Update to the new language API.

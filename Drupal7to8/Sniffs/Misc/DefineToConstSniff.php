@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Misc_DefineToConstSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * Use const keyword to define constants instead of define().

@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Cache_NewCacheApiSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * Update to the new Cache API.

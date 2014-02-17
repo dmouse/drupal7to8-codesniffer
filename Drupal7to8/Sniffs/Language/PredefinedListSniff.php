@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Sniffs_Language_PredefinedListSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * _locale_get_predefined_list() is now part of the language manager.

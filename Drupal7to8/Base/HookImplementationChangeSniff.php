@@ -1,20 +1,7 @@
 <?php
-/**
- * Drupal7to8_Base_HookImplementationChangeSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * Base class to build hook implementation change sniffs.
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
 class Drupal7to8_Base_HookImplementationChangeSniff implements PHP_CodeSniffer_Sniff {
 

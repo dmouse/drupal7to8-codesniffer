@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Drupal7to8_Sniffs_Utility_ParseInfoHookArray.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
-
 class Drupal7to8_Utility_ParseInfoHookArray {
 
   /**

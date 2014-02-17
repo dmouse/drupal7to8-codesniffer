@@ -1,13 +1,4 @@
 <?php
-/**
- * Drupal7to8_Base_FunctionReplacementSniff.
- *
- * PHP version 5
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
- */
 
 /**
  * Drupal7to8_Base_FunctionReplacementSniff.
@@ -17,10 +8,6 @@
  * 1) fixability
  * 2) optionally: dynamic argument replacement
  * 3) optionally: insertion of use statements
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
 class Drupal7to8_Base_FunctionReplacementSniff extends Generic_Sniffs_PHP_ForbiddenFunctionsSniff {
 
