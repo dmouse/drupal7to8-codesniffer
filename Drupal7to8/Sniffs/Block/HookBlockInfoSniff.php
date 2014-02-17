@@ -1,6 +1,6 @@
 <?php
 /**
- * Drupal7to8_Sniffs_HookBlockInfo_HookBlockInfo.
+ * Drupal7to8_Sniffs_Block_HookBlockInfo.
  *
  * PHP version 5
  *
@@ -16,7 +16,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
-class Drupal7to8_Sniffs_HookBlockInfo_HookBlockInfoSniff implements PHP_CodeSniffer_Sniff {
+class Drupal7to8_Sniffs_Block_HookBlockInfoSniff implements PHP_CodeSniffer_Sniff {
 
   /**
    * The status message linking the Block plugin change record.
