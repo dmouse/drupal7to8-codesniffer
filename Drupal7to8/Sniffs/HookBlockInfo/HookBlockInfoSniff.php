@@ -83,7 +83,7 @@ class Drupal7to8_Sniffs_HookBlockInfo_HookBlockInfoSniff implements PHP_CodeSnif
       foreach ($this->blockDefinitions as $machine_name => $definition) {
         $class_name = Drupal7to8_Utility_CreateFile::camelUnderscores($machine_name) . 'Block';
         $replacements = array(
-          '__MODULE_NAME__' => $module_name,
+          '__MODULE_NAME__' => $function->getModuleName(),
           '__BLOCK_NAME__' => $class_name,
           '__BLOCK_ID__' => $machine_name,
           '__BLOCK_LABEL__' => !empty($definition['info']) ? $definition['info'] : '',

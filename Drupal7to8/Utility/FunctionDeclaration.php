@@ -75,6 +75,15 @@ class Drupal7to8_Utility_FunctionDeclaration extends Drupal7to8_Utility_TokenSub
   }
 
   /**
+   * Returns the module name for the token subset.
+   *
+   * @return string
+   */
+  public function getModuleName() {
+    return Drupal7to8_Utility_ModuleProperties::getModuleName($this->phpcsFile);
+  }
+
+  /**
    * Determines whether this function is a hook implementation.
    *
    * @param string $hook_name
@@ -85,12 +94,11 @@ class Drupal7to8_Utility_FunctionDeclaration extends Drupal7to8_Utility_TokenSub
    *   current module, or FALSE otherwise.
    */
   public function isHookImplementation($hook_name) {
-    $module_name = Drupal7to8_Utility_ModuleProperties::getModuleName($this->phpcsFile);
     if (substr($hook_name, 0, 5) !== 'hook_') {
       throw new \Exception("$hook_name must begin with 'hook_'");
     }
 
-    if ($this->getFunctionName() == $module_name . '_' . substr($hook_name, 5)) {
+    if ($this->getFunctionName() == $this->getModuleName() . '_' . substr($hook_name, 5)) {
       return TRUE;
     }
 
