@@ -24,8 +24,18 @@ class __BLOCK_NAME__ extends BlockBase {
    */
   public function build() {
     $build = array();
-    // @todo Add the hook_block_view() business here.
+    /** @fixme Add the content from your hook_block_view() here. **/
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    $configuration = array();
+    // BlockBase provides DRUPAL_NO_CACHE by default.
+    // __BLOCK_CACHING__
+    return $configuration;
   }
 
 }
