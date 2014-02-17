@@ -61,7 +61,6 @@ class Drupal7to8_Sniffs_HookBlockInfo_HookBlockInfoSniff implements PHP_CodeSnif
       return;
     }
 
-
     // Only act on hook_block_info() and hook_block_view().
     // @todo Support hook_block_view() later.
     if (!$function->isHookImplementation('hook_block_info')) {

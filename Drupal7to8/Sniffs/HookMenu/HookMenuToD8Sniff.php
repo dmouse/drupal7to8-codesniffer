@@ -48,7 +48,13 @@ class Drupal7to8_Sniffs_HookMenu_HookMenuToD8Sniff implements PHP_CodeSniffer_Sn
    * @return void
    */
   public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
-    $function = new Drupal7to8_Utility_InfoHook($phpcsFile, $stackPtr);
+    // Only process a valid InfoHook.
+    try {
+      $function = new Drupal7to8_Utility_InfoHook($phpcsFile, $stackPtr);
+    }
+    catch (Drupal7to8_Exception_InvalidSubsetException $e) {
+      return;
+    }
 
     // Only proceed if this is a hook_menu() declaration.
     if (!$function->isHookImplementation('hook_menu')) {
