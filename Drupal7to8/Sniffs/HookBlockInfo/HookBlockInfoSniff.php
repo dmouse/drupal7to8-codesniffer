@@ -105,15 +105,14 @@ class Drupal7to8_Sniffs_HookBlockInfo_HookBlockInfoSniff implements PHP_CodeSnif
         $block_files[$filepath] = Drupal7to8_Utility_CreateFile::replaceTokens(__DIR__ . DIRECTORY_SEPARATOR . 'BlockPluginTemplate.php', $replacements);
       }
 
+    // Otherwise, it is safe to evaluate the hook to get its return value.
+    $fix = $phpcsFile->addFixableError($this::$changeRecordMessage, $stackPtr, 'HookBlockInfo');
+    if ($phpcsFile->fixer->enabled === TRUE) {
       foreach ($block_files as $filepath => $file_data) {
         Drupal7to8_Utility_CreateFile::writeFile($filepath, $file_data);
       }
 
       // @todo Add a fixme to the old hook_block_info() as well.
-
-    // Otherwise, it is safe to evaluate the hook to get its return value.
-    $fix = $phpcsFile->addFixableError($this::$changeRecordMessage, $stackPtr, 'HookBlockInfo');
-    if ($phpcsFile->fixer->enabled === TRUE) {
     }
   }
 
