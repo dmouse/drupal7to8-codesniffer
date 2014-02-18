@@ -31,11 +31,6 @@ class Drupal7to8_Utility_InfoHook extends Drupal7to8_Utility_FunctionDeclaration
   /**
    * A list of constants that were escaped to strings during processing.
    *
-   * Constants that are not whitelisted or replaced with specific values are
-   * escaped to strings in in getContent() if $this->escapeConstants is TRUE.
-   * The array keys are the constant name, and the values are the string
-   * replacements.
-   *
    * @var array
    */
   protected $escapedConstants = array();
@@ -109,7 +104,7 @@ class Drupal7to8_Utility_InfoHook extends Drupal7to8_Utility_FunctionDeclaration
       }
       elseif ($this->escapeConstants && !in_array($token['content'], $this->whitelist)) {
         $token_content = "'" . $token['content'] . "'";
-        $this->escapedConstants[$token['content']] = $token_content;
+        $this->escapedConstants = [$token['content'];
       }
     }
 
