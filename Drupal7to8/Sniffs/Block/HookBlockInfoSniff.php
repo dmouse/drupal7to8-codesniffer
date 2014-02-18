@@ -1,11 +1,7 @@
 <?php
 
 /**
- * Warns that .info files are now .info.yml files.
- *
- * @category PHP
- * @package  PHP_CodeSniffer
- * @link     http://pear.php.net/package/PHP_CodeSniffer
+ * Converts hook_block_info() implementations to plugins.
  */
 class Drupal7to8_Sniffs_Block_HookBlockInfoSniff implements PHP_CodeSniffer_Sniff {
 
