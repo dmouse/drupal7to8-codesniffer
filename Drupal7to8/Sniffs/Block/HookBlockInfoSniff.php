@@ -65,6 +65,9 @@ class Drupal7to8_Sniffs_Block_HookBlockInfoSniff implements PHP_CodeSniffer_Snif
       return;
     }
 
+    // Otherwise, it is safe to evaluate the hook to get its return value.
+    $fix = $phpcsFile->addFixableError($this::$changeRecordMessage, $stackPtr, 'HookBlockInfo');
+    if ($phpcsFile->fixer->enabled === TRUE) {
       $function->enableEscapedConstants();
 
       $this->blockDefinitions = $function->getHookReturnArray();
@@ -93,13 +96,7 @@ class Drupal7to8_Sniffs_Block_HookBlockInfoSniff implements PHP_CodeSniffer_Snif
 
         // Create a plugin definition file.
         $filepath = Drupal7to8_Utility_ModuleProperties::getPsrPath($phpcsFile, 'Plugin\Block') . DIRECTORY_SEPARATOR . $class_name . '.php';
-        $block_files[$filepath] = Drupal7to8_Utility_CreateFile::replaceTokens(__DIR__ . DIRECTORY_SEPARATOR . 'BlockPluginTemplate.php', $replacements);
-      }
-
-    // Otherwise, it is safe to evaluate the hook to get its return value.
-    $fix = $phpcsFile->addFixableError($this::$changeRecordMessage, $stackPtr, 'HookBlockInfo');
-    if ($phpcsFile->fixer->enabled === TRUE) {
-      foreach ($block_files as $filepath => $file_data) {
+        $file_data = Drupal7to8_Utility_CreateFile::replaceTokens(__DIR__ . DIRECTORY_SEPARATOR . 'BlockPluginTemplate.php', $replacements);
         Drupal7to8_Utility_CreateFile::writeFile($filepath, $file_data);
       }
 
