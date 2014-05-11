@@ -1,6 +1,0 @@
-{
-    "require": {
-           "symfony/yaml": "v2.3.4"
-    }
-}
-

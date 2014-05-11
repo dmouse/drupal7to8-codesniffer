@@ -1,3 +1,21 @@
+DrupalModuleUpgrader
+====================
+
+It's a thing.
+
+How?
+----
+
+1. Grab this repo.
+2. Enter this repo's directory. `cd drupalmoduleupgrader`
+3. Install Composer. `curl -sS https://getcomposer.org/installer | php`
+4. Install dependencies. `./composer.phar install` Note that if you do this more than a couple times, GitHub will ask for your credentials. This is normal, if annoying.
+5. chmod u+x upgrade
+6. Do this: `./upgrade drupal:upgrade [path to files to upgrade]`
+
+You will see a code review of changes you could make to upgrade.
+
+
 drupal7to8-codesniffer
 ======================
 

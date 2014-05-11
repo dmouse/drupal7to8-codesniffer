@@ -4,8 +4,6 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Dumper;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-
 /**
  * Warns that .info files are now .info.yml files, and attempts to rename them.
  *
