@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @file
+ * This is the executable for a Drupal 8 code upgrade utility.
+ */
+
+require_once 'vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+
+use Drupal\Upgrade\Command\UpgradeCommand;
+
+$application = new Application();
+
+$application->add(new UpgradeCommand());
+
+$application->run();

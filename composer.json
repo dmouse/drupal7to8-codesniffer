@@ -1,0 +1,34 @@
+{
+	"name": "drupal/drupalmoduleupgrader",
+	"description": "Drupal-oriented code review",
+	"autoload": {
+		"psr-4": {"Drupal\\": "src/"}
+	},
+	"config": {
+		"bin-dir": "bin"
+	},
+	"bin": ["scripts/upgrade"],
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/squizlabs/PHP_CodeSniffer"
+		},
+		{
+			"type": "package",
+			"package": {
+				"name": "drupalmodule/coder",
+				"version": "7.2.1",
+				"dist": {
+					"url": "http://ftp.drupal.org/files/projects/coder-7.x-2.1.zip",
+					"type": "zip"
+				}
+			}
+		}
+	],
+	"require": {
+		"squizlabs/php_codesniffer": "2.0.*@dev",
+		"drupalmodule/coder": "~7.2",
+		"symfony/yaml": "~2.3",
+		"symfony/console": "~2.3"
+	}
+}
