@@ -1,39 +1,10 @@
-INSTALLATION
-============
+drupal7to8-codesniffer
+======================
 
-0. Install Composer: http://getcomposer.org/doc/00-intro.md#globally
-
-1. Check out the Drupal Module Upgrader project from Git:
-
-   git clone --branch master http://git.drupal.org/project/drupalmoduleupgrader.git
-
-2. Run composer install:
-
-   cd drupalmoduleupgrader
-   composer install
-
-   You should see output as it downloads various dependencies (phpcs, yaml...)
-
-3. Register the "Drupal7to8" directory as a PHP_CodeSniffer standard:
-
-   ln -s /path/to/drupalmoduleupgrader/Drupal7to8 vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/Drupal7to8
-   ./vendor/bin/phpcs -i
-
-   You should see "Drupal7to8" in the list of installed standards.
-
-4. For convenience, set up the following aliases in your ~/.bash_profile:
-
-   alias phpcs='/path/to/drupalmoduleupgrader/vendor/bin/phpcs --extensions=php,module,inc,install,test,profile,theme,css,js,txt,info,yml'
-   alias phpcbf='/path/to/drupalmoduleupgrader/vendor/bin/phpcbf --extensions=php,module,inc,install,test,profile,theme,css,js,txt,info,yml'
-
-5. From a Drupal 7 module directory, run the following:
-
-   # Scan for problem code.
-   phpcs --standard=Drupal7to8 .
-
-   # Attempt to fix problem code.
-   phpcbf --standard=Drupal7to8 .
-
+1. Install the "phpcs-fixer" branch of PHP_CodeSniffer: https://github.com/squizlabs/PHP_CodeSniffer/tree/phpcs-fixer
+2. Run it with `phpcs --standard=Drupal7to8 .` in your Drupal 7 module directory
+3. ???
+4. Profit!
 
 Writing an upgrade sniff
 ========================
