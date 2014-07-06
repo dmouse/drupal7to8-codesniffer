@@ -2,7 +2,7 @@
 	"name": "drupal/drupalmoduleupgrader",
 	"description": "Drupal-oriented code review",
 	"autoload": {
-		"psr-4": {"Drupal\\": "src/"}
+		"psr-4": {"Drupal\\Upgrade\\": "src/"}
 	},
 	"config": {
 		"bin-dir": "bin"
