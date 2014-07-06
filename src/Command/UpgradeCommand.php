@@ -22,28 +22,30 @@ class UpgradeCommand extends Command {
    */
   protected function configure() {
     $this
-        ->setName('drupal:upgrade')
-        ->setDescription('Upgrade your Drupal.')
-        ->addArgument(
-            'path', InputArgument::REQUIRED, 'Path to the Drupal file to upgrade.'
-        )
-        ->addOption(
-            'standard', 's', InputOption::VALUE_OPTIONAL, 'Path to a code sniffer standard.', dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/Drupal7to8'
-        );
+      ->setName('drupal:upgrade')
+      ->setDescription('Upgrade your Drupal.')
+      ->addArgument(
+        'path', InputArgument::REQUIRED, 'Path to the Drupal file to upgrade.'
+      )
+      ->addOption(
+        'standard', 's', InputOption::VALUE_OPTIONAL, 'The code sniffer standard name.', 'Drupal7to8'
+      );
   }
 
   /**
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-
     $path = $input->getArgument('path');
     if (!file_exists(realpath($path))) {
-      $output->writeln('Path does not exist: ' . $path);
-      return;
+      throw new \InvalidArgumentException(sprintf('Path "%s" does not exist:', $path));
     }
 
     $standard = $input->getOption('standard');
+    if (!$standard) {
+      $standard = 'Drupal7to8';
+    }
+
     $verbosity = $output->getVerbosity();
 
     $upgrader = new Upgrader();
