@@ -9,6 +9,7 @@
  * 2) optionally: dynamic argument replacement
  * 3) optionally: insertion of use statements
  */
+
 class Drupal7to8_Base_FunctionReplacementSniff extends Generic_Sniffs_PHP_ForbiddenFunctionsSniff {
 
   protected $forbiddenFunctions = array();

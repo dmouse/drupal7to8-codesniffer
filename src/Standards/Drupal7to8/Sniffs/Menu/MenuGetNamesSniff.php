@@ -7,6 +7,7 @@
  * @package  PHP_CodeSniffer
  * @link     http://pear.php.net/package/PHP_CodeSniffer
  */
+
 class Drupal7to8_Sniffs_Menu_MenuGetNamesSniff extends Drupal7to8_Base_FunctionReplacementSniff {
 
   protected $message = '!function() was removed: https://drupal.org/node/1357900';

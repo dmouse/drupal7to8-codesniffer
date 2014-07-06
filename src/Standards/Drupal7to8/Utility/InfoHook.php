@@ -104,7 +104,7 @@ class Drupal7to8_Utility_InfoHook extends Drupal7to8_Utility_FunctionDeclaration
       }
       elseif ($this->escapeConstants && !in_array($token['content'], $this->whitelist)) {
         $token_content = "'" . $token['content'] . "'";
-        $this->escapedConstants = [$token['content'];
+        $this->escapedConstants = $token['content'];
       }
     }
 
