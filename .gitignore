@@ -1,0 +1,5 @@
+composer.phar
+vendor
+bin
+.DS_Store
+checkout
