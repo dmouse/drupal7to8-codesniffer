@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+<?php
+
+$module_path = $argv[1];
+
+$args = '--standard=' . __DIR__ . '/../src/Standards/Drupal7to8/ruleset.xml ';
+$args .= $module_path;
+$command = __DIR__ . '/phpcs ';
+
+system($command . $args);

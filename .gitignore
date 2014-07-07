@@ -1,6 +1,6 @@
 composer.phar
 composer.lock
 vendor
-bin
+bin/*
 .DS_Store
 checkout

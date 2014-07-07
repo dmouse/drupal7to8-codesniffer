@@ -1,5 +1,5 @@
 {
-  "name": "drupal/drupal7to8-cs",
+  "name": "drupal/moduleupgrader",
   "description": "PHP_CS standard for upgrading Drupal 7 code to Drupal 8",
   "license": "GPL-2.0+",
   "support": {
@@ -17,5 +17,9 @@
     "phpcs",
     "PHP_CodeSniffer",
     "standards"
-  ]
+  ],
+  "bin": ["scripts/upgrader"],
+  "config": {
+    "bin-dir": "bin"
+  }
 }
