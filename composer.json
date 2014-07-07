@@ -18,7 +18,7 @@
     "PHP_CodeSniffer",
     "standards"
   ],
-  "bin": ["scripts/upgrader"],
+  "bin": ["bin/upgrader"],
   "config": {
     "bin-dir": "bin"
   }
